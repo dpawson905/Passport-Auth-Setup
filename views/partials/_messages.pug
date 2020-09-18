@@ -1,0 +1,32 @@
+if error && error.length
+  .toast.message.shadow.animated.bounceInRight(id="error-toast" role='alert', aria-live='assertive', aria-atomic='true' data-autohide="false")
+    .toast-header.error
+      p.mr-2.mt-3
+        i.far.fa-bug
+      strong.mr-auto= title
+      small Just Now
+      button.ml-2.mb-1.close(type='button', data-dismiss='toast', aria-label='Close')
+        span(aria-hidden='true') ×
+    .toast-body.text-danger
+      p=error
+  script.
+    $(document).ready(function(){
+      $('.toast').toast('show');
+    });
+  
+
+if success && success.length
+  .toast.message.shadow.animated.bounceInRight(id="success-toast" role='alert', aria-live='assertive', aria-atomic='true' data-autohide="false")
+    .toast-header.success
+      p.mr-2
+        i.far.fa-check-circle
+      strong.mr-auto= title
+      small Just Now
+      button.ml-2.mb-1.close(type='button', data-dismiss='toast', aria-label='Close')
+        span(aria-hidden='true') ×
+    .toast-body.text-success
+      p=success
+  script.
+    $(document).ready(function(){
+      $('.toast').toast('show');
+    });

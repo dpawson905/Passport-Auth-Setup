@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  .container-fluid.p-0
+    .row.g-0
+      .col-lg-6.d-none.d-xl-block
+        img.img-fluid.login-img.shadow(src="/images/authImage.jpeg", alt="Old Typewriter" cover)
+      .col-xl-6.col-lg-12.login-form
+        h1.py-3 Login
+        form(action="/auth/login" method="POST")
+          .form-inputs
+            .mb-2
+              label(for="username") Username
+              
+              input.form-control(type="text" name="username" id="username" placeholder="Username" autofocus)
+            .mb-2
+              label(for="password") Last Name
+              input.form-control(type="password" name="password" id="password" placeholder="Password")
+            .mb-2
+              input(type="hidden", name="_csrf" value=`${csrfToken}`)
+              a.float-left.btn.btn-outline-secondary(href="/auth/forgot-password") Forget your password?
+                
+              button.btn.btn-primary.float-right(type="submit") Login
+              
+  include ../partials/_footer

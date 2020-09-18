@@ -1,0 +1,18 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+  .container-fluid
+    a.navbar-brand(href='#')= title
+    button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navContent' aria-controls='navContent' aria-expanded='false' aria-label='Toggle navigation')
+      span.navbar-toggler-icon
+    #navContent.collapse.navbar-collapse
+      ul.navbar-nav.mr-auto.mb-2.mb-lg-0
+        li.nav-item
+          a.nav-link(class=(url === 'home' ? 'active' : '') href='/') Home
+      ul.navbar-nav.ml-auto.mb-2.mb-lg-0
+        if currentUser && isAuthenticated
+          li.nav-item
+            a.nav-link(href='/auth/logout') Logout #{currentUser.firstName.charAt(0).toUpperCase() + currentUser.firstName.slice(1)}
+        else
+          li.nav-item
+            a.nav-link(class=(url === 'register' ? 'active' : '') href='/auth/register') Register
+          li.nav-item
+            a.nav-link(class=(url === 'login' ? 'active' : '') href='/auth/login') Login
