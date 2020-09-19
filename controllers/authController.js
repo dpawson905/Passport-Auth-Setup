@@ -31,6 +31,14 @@ exports.postRegister = async (req, res, next) => {
       expiresDateCheck: Date.now(),
       isVerified: false,
     });
+    if (userInfo.password !== userInfo.password2) {
+      const error = "Sorry, passwords must match.";
+      return res.render("auth/register", {
+        error,
+        userInfo,
+        url: "register",
+      });
+    }
     delete userInfo.password2;
     const user = await User.register(newUser, userInfo.password);
     const userToken = new Token({
