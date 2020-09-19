@@ -22,6 +22,7 @@ exports.getRegister = (req, res, next) => {
 
 exports.postRegister = async (req, res, next) => {
   const userInfo = req.body;
+  // Middleware runs before to check if passwords match
   try {
     const newUser = new User({
       firstName: userInfo.firstName,
@@ -31,14 +32,6 @@ exports.postRegister = async (req, res, next) => {
       expiresDateCheck: Date.now(),
       isVerified: false,
     });
-    if (userInfo.password !== userInfo.password2) {
-      const error = "Sorry, passwords must match.";
-      return res.render("auth/register", {
-        error,
-        userInfo,
-        url: "register",
-      });
-    }
     delete userInfo.password2;
     const user = await User.register(newUser, userInfo.password);
     const userToken = new Token({
@@ -102,12 +95,6 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
-  const user = await User.findOne({ username: req.body.username });
-  if (!user.isVerified) {
-    const error =
-      "You have not validated your account. Please check your email or request your token here.";
-    return res.render("auth/resendToken", { error });
-  }
   await passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/",

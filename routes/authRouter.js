@@ -8,22 +8,40 @@ const {
   isNotAuthenticated,
   isAuthenticated,
   isVerified,
+  isNotVerified,
+  validatePassword,
 } = require("../middleware/index");
 
 router
   .route("/register")
   .get(isAuthenticated, authController.getRegister)
-  .post(isAuthenticated, asyncErrorHandler(authController.postRegister));
+  .post(
+    isAuthenticated,
+    validatePassword,
+    asyncErrorHandler(authController.postRegister)
+  );
 
 router
   .route("/login")
   .get(isAuthenticated, authController.getLogin)
-  .post(isAuthenticated, asyncErrorHandler(authController.postLogin));
+  .post(
+    isAuthenticated,
+    asyncErrorHandler(isNotVerified),
+    asyncErrorHandler(authController.postLogin)
+  );
 
 router
   .route("/resend-token")
-  .get(isAuthenticated, authController.getResendToken)
-  .post(isAuthenticated, asyncErrorHandler(authController.postResendToken));
+  .get(
+    isAuthenticated,
+    asyncErrorHandler(isVerified),
+    authController.getResendToken
+  )
+  .post(
+    isAuthenticated,
+    asyncErrorHandler(isVerified),
+    asyncErrorHandler(authController.postResendToken)
+  );
 
 router
   .route("/forgot-password")
@@ -43,6 +61,7 @@ router.get(
 router.patch(
   "/change-password",
   isAuthenticated,
+  validatePassword,
   asyncErrorHandler(authController.patchChangePassword)
 );
 router.get("/logout", isNotAuthenticated, authController.logOut);

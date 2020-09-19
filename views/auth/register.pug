@@ -11,16 +11,16 @@ block content
           .form-inputs
             .mb-2
               label(for="email") Email Address
-              input.form-control(type="email" name="email" id="email" placeholder="Email Address" autofocus)
+              input.form-control(type="email" name="email" id="email" placeholder="Email Address" value=`${userInfo.email}` autofocus)
             .mb-2
               label(for="username") Username
-              input.form-control(type="text" name="username" id="username" placeholder="Username")
+              input.form-control(type="text" name="username" id="username" placeholder="Username" value=`${userInfo.username}`)
             .mb-2
               label(for="firstName") First Name
-              input.form-control(type="text" name="firstName" id="firstName" placeholder="First Name")
+              input.form-control(type="text" name="firstName" id="firstName" placeholder="First Name" value=`${userInfo.firstName}`)
             .mb-2
               label(for="lastName") Last Name
-              input.form-control(type="text" name="lastName" id="lastName" placeholder="Last Name")
+              input.form-control(type="text" name="lastName" id="lastName" placeholder="Last Name" value=`${userInfo.lastName}`)
             .mb-2
               label(for="password") Password
               input.form-control(type="password" name="password" id="password" placeholder="Password")
