@@ -1,19 +1,19 @@
 # Auth Starter
 ## Requirements
 1. This project uses MongoDb(Mongoose), Express, Cloudinary, SendGrid and the template engine is Pug.
-2. For authentication is uses passport and stores local accounts.
+2. For authentication is implemented using passport and stores local accounts.
 ## Setup
 * Create a .env file and input the following...
     - NODE_ENV=
-    DB_URL=
-    COOKIE_SECRET=
-    CLOUDINARY_SECRET=
-    CLOUD_NAME=
-    CLOUDINARY_API_KEY=
-    CLOUDINARY_URL=CLOUDINARY_URL=
-    SENDGRID_API_KEY=
-    EMAIL_FROM=
-* run npm i to install the dependencies
+    - DB_URL=
+    - COOKIE_SECRET=
+    - CLOUDINARY_SECRET=
+    - CLOUD_NAME=
+    - CLOUDINARY_API_KEY=
+    - CLOUDINARY_URL=CLOUDINARY_URL=
+    - SENDGRID_API_KEY=
+    - EMAIL_FROM=
+* run `npm i` to install the dependencies
 
 ## Running the app
 * For Mac/Linux users run the app with `npm run dev`
