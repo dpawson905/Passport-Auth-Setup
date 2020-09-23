@@ -1,9 +1,8 @@
 const debug = require("debug")("auth-starter:auth");
 const passport = require("passport");
 const crypto = require("crypto");
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const Email = require("../utils/email");
+const emailUrl = require('../utils/urls');
 
 const User = require("../models/userModel");
 const Token = require("../models/tokenModel");
@@ -39,7 +38,7 @@ exports.postRegister = async (req, res, next) => {
       token: crypto.randomBytes(16).toString("hex"),
     });
     await userToken.save();
-    const url = `${req.protocol}://${req.headers.host}/auth/token?token=${userToken.token}`;
+    const url = emailUrl.setUrl(req, 'auth', `token?token=${userToken.token}`);
     const title = res.locals.title;
     await new Email(user, url).sendWelcome(title);
     req.flash(
@@ -122,19 +121,17 @@ exports.postResendToken = async (req, res, next) => {
     return res.redirect("/auth/register");
   }
   const token = await Token.findOne({ _userId: user._id });
-
+  let url = emailUrl.setUrl(req, 'auth', `token?token=${newToken.token}`);
   if (!token) {
     const newToken = new Token({
       _userId: user._id,
       token: crypto.randomBytes(16).toString("hex"),
     });
     await newToken.save();
-    const url = `${req.protocol}://${req.headers.host}/auth/token?token=${newToken.token}`;
     await new Email(user, url).resendToken();
     req.flash("success", "Your token has been sent to your email.");
     return res.redirect("/");
   } else {
-    const url = `${req.protocol}://${req.headers.host}/auth/token?token=${token.token}`;
     await new Email(user, url).resendToken();
     req.flash("success", "Your token has been sent to your email.");
     return res.redirect("/");
@@ -156,7 +153,7 @@ exports.postForgotPassword = async (req, res, next) => {
     token: crypto.randomBytes(6).toString("hex"),
   });
   await newToken.save();
-  const url = `${req.protocol}://${req.headers.host}/auth/newpw-token?token=${newToken.token}`;
+  const url = emailUrl.setUrl(req, 'auth', `newpw-token?token=${newToken.token}`);
   await new Email(user, url).sendPasswordReset();
   req.flash("success", "Please check your email to change your password.");
   return res.redirect("/");
