@@ -1,4 +1,4 @@
-const debug = require("debug")("auth-starter:app");
+const debug = require("debug")("app:app");
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -14,7 +14,7 @@ const session = require("express-session");
 const methodOverride = require("method-override");
 const passport = require("passport");
 const mongoose = require("mongoose");
-const MongoDBStore = require("connect-mongo")(session);
+const MongoDBStore = require("connect-mongo").default;
 const csrf = require("csurf");
 const expressSanitizer = require("express-sanitizer");
 
@@ -82,10 +82,12 @@ const sess = {
     expires: Date.now() + 1000 * 60 * 60,
     maxAge: 1000 * 60 * 60,
   },
-  store: new MongoDBStore({
-    url: process.env.DB_URL,
-    touchAfter: 24 * 3600,
+  store: MongoDBStore.create({
+    mongoUrl: process.env.DB_URL,
     secret: process.env.COOKIE_SECRET,
+    crypto: {
+      secret: process.env.COOKIE_SECRET
+    }
   }),
   resave: true,
   saveUninitialized: false,

@@ -1,4 +1,4 @@
-const debug = require("debug")("auth-starter:auth");
+const debug = require("debug")("app:auth");
 const passport = require("passport");
 const crypto = require("crypto");
 const Email = require("../utils/email");

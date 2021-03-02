@@ -1,4 +1,4 @@
-const debug = require('debug')('auth-starter:server');
+const debug = require('debug')('app:server');
 const mongoose = require("mongoose");
 
 if (process.env.NODE_ENV !== "production") {

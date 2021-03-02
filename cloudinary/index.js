@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -7,17 +7,21 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
   url: process.env.CLOUDINARY_URL,
 });
-const cloudinaryStorage = require("multer-storage-cloudinary");
-const storage = cloudinaryStorage({
+
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const storage = new CloudinaryStorage({
   cloudinary,
-  folder: "NewBlog",
-  allowedFormats: ["jpeg", "jpg", "png"],
-  filename: function (req, file, cb) {
-    let buf = crypto.randomBytes(16);
-    buf = buf.toString("hex");
-    let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/gi, "");
-    uniqFileName += buf;
-    cb(undefined, uniqFileName);
+  params: async (req, file) => {
+	let buf = crypto.randomBytes(16);
+	buf = buf.toString('hex');
+	let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
+	uniqFileName += buf;
+	console.log(uniqFileName)
+    return {
+      folder: process.env.APP_NAME,
+      format: 'jpeg',
+      public_id: uniqFileName,
+    };
   },
 });
 
