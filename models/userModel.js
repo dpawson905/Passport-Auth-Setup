@@ -52,10 +52,7 @@ const UserSchema = new Schema(
         default: true,
       },
     },
-    image: {
-      secure_url: { type: String, default: "/images/no-user.jpg" },
-      public_id: String,
-    },
+    images: [ { path: String, filename: String } ],
     expiresDateCheck: {
       type: Date,
       default: undefined,
