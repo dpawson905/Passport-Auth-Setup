@@ -84,9 +84,9 @@ const sess = {
   },
   store: MongoDBStore.create({
     mongoUrl: process.env.DB_URL,
-    secret: process.env.COOKIE_SECRET,
+    touchAfter: 24 * 3600,
     crypto: {
-      secret: process.env.COOKIE_SECRET
+      secret: 'bearer' + process.env.COOKIE_SECRET
     }
   }),
   resave: true,
