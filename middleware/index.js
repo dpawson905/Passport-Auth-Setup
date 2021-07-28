@@ -5,7 +5,7 @@ const middleware = {
   asyncErrorHandler: (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   },
-  
+
   isAuthenticated: (req, res, next) => {
     if (req.isAuthenticated()) {
       req.flash("error", "You are currently logged in.");

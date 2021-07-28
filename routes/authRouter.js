@@ -24,10 +24,7 @@ router
 router
   .route("/login")
   .get(isAuthenticated, authController.getLogin)
-  .post(
-    isAuthenticated,
-    asyncErrorHandler(authController.postLogin)
-  );
+  .post(isAuthenticated, asyncErrorHandler(authController.postLogin));
 
 router
   .route("/resend-token")

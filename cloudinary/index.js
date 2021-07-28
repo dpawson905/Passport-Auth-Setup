@@ -8,18 +8,18 @@ cloudinary.config({
   url: process.env.CLOUDINARY_URL,
 });
 
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
-	let buf = crypto.randomBytes(16);
-	buf = buf.toString('hex');
-	let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
-	uniqFileName += buf;
-	console.log(uniqFileName)
+    let buf = crypto.randomBytes(16);
+    buf = buf.toString("hex");
+    let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/gi, "");
+    uniqFileName += buf;
+    console.log(uniqFileName);
     return {
       folder: process.env.APP_NAME,
-      format: 'jpeg',
+      format: "jpeg",
       public_id: uniqFileName,
     };
   },

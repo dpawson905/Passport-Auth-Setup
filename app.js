@@ -86,8 +86,8 @@ const sess = {
     mongoUrl: process.env.DB_URL,
     touchAfter: 24 * 3600,
     crypto: {
-      secret: 'bearer' + process.env.COOKIE_SECRET
-    }
+      secret: "bearer" + process.env.COOKIE_SECRET,
+    },
   }),
   resave: true,
   saveUninitialized: false,

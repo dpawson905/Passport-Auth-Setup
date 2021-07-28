@@ -2,7 +2,7 @@ const debug = require("debug")("app:auth");
 const passport = require("passport");
 const crypto = require("crypto");
 const Email = require("../utils/email");
-const emailUrl = require('../utils/urls');
+const emailUrl = require("../utils/urls");
 
 const User = require("../models/userModel");
 const Token = require("../models/tokenModel");
@@ -38,7 +38,7 @@ exports.postRegister = async (req, res, next) => {
       token: crypto.randomBytes(16).toString("hex"),
     });
     await userToken.save();
-    const url = emailUrl.setUrl(req, 'auth', `token?token=${userToken.token}`);
+    const url = emailUrl.setUrl(req, "auth", `token?token=${userToken.token}`);
     const title = res.locals.title;
     await new Email(user, url).sendWelcome(title);
     req.flash(
@@ -55,7 +55,7 @@ exports.postRegister = async (req, res, next) => {
         url: "register",
       });
     } else {
-      console.log(err);
+      debug(err);
       const error = err.message;
       return res.render("auth/register", {
         error,
@@ -75,7 +75,6 @@ exports.verifyFromEmail = async (req, res, next) => {
     return res.redirect("/");
   }
   const user = await User.findOne({ _id: token._userId });
-  console.log(user);
   user.isVerified = true;
   user.expiresDateCheck = undefined;
   await user.save();
@@ -97,7 +96,7 @@ exports.postLogin = async (req, res, next) => {
   const user = await User.findOne({ username: req.body.username });
   if (!user.isVerified) {
     req.flash("error", "You have not verified your account");
-    return res.redirect('/');
+    return res.redirect("/");
   }
   await passport.authenticate("local", {
     successRedirect: "/",
@@ -126,7 +125,7 @@ exports.postResendToken = async (req, res, next) => {
     return res.redirect("/auth/register");
   }
   const token = await Token.findOne({ _userId: user._id });
-  let url = emailUrl.setUrl(req, 'auth', `token?token=${newToken.token}`);
+  let url = emailUrl.setUrl(req, "auth", `token?token=${newToken.token}`);
   if (!token) {
     const newToken = new Token({
       _userId: user._id,
@@ -158,7 +157,11 @@ exports.postForgotPassword = async (req, res, next) => {
     token: crypto.randomBytes(6).toString("hex"),
   });
   await newToken.save();
-  const url = emailUrl.setUrl(req, 'auth', `newpw-token?token=${newToken.token}`);
+  const url = emailUrl.setUrl(
+    req,
+    "auth",
+    `newpw-token?token=${newToken.token}`
+  );
   await new Email(user, url).sendPasswordReset();
   req.flash("success", "Please check your email to change your password.");
   return res.redirect("/");
