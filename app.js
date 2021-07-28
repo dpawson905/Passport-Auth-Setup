@@ -14,7 +14,7 @@ const session = require("express-session");
 const methodOverride = require("method-override");
 const passport = require("passport");
 const mongoose = require("mongoose");
-const MongoDBStore = require("connect-mongo").default;
+const MongoDBStore = require("connect-mongo");
 const csrf = require("csurf");
 const expressSanitizer = require("express-sanitizer");
 
