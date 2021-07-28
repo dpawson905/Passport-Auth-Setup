@@ -5,6 +5,7 @@ const middleware = {
   asyncErrorHandler: (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   },
+  
   isAuthenticated: (req, res, next) => {
     if (req.isAuthenticated()) {
       req.flash("error", "You are currently logged in.");
@@ -13,6 +14,7 @@ const middleware = {
       return next();
     }
   },
+
   isNotAuthenticated: (req, res, next) => {
     if (req.isAuthenticated()) {
       return next();
@@ -22,6 +24,7 @@ const middleware = {
       res.redirect("/auth/login");
     }
   },
+
   isAdmin: (req, res, next) => {
     if (req.isAuthenticated() && req.user.roles.admin) {
       return next();
@@ -29,9 +32,11 @@ const middleware = {
     req.flash("error", "You don't have the privileges to do that.");
     res.redirect("/auth/login");
   },
+
   deleteProfileImage: async (req) => {
     if (req.file) await cloudinary.uploader.destroy(req.file.filename);
   },
+
   isVerified: async (req, res, next) => {
     let user = await User.findOne({ email: req.body.email });
     if (!user.isVerified) {
@@ -39,14 +44,6 @@ const middleware = {
     }
     req.flash("error", "Your account is already active.");
     res.redirect("/");
-  },
-  isNotVerified: async (req, res, next) => {
-    let user = await User.findOne({ email: req.body.email });
-    if (!user.isVerified) {
-      req.flash("error", "Your account is not active.");
-      res.redirect("/");
-    }
-    return next();
   },
 
   validatePassword: (req, res, next) => {

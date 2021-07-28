@@ -26,7 +26,6 @@ router
   .get(isAuthenticated, authController.getLogin)
   .post(
     isAuthenticated,
-    asyncErrorHandler(isNotVerified),
     asyncErrorHandler(authController.postLogin)
   );
 

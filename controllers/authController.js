@@ -94,6 +94,11 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
+  const user = await User.findOne({ username: req.body.username });
+  if (!user.isVerified) {
+    req.flash("error", "You have not verified your account");
+    return res.redirect('/');
+  }
   await passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/",
