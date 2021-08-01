@@ -3,9 +3,14 @@ const passport = require("passport");
 const crypto = require("crypto");
 const Email = require("../utils/email");
 const emailUrl = require("../utils/urls");
+const helpers = require("../utils/helpers");
 
 const User = require("../models/userModel");
 const Token = require("../models/tokenModel");
+
+const removeFailedUser = async (userEmail) => {
+  await User.deleteOne({ email: userEmail });
+};
 
 exports.getRegister = (req, res, next) => {
   res.render("auth/register", {
@@ -54,8 +59,19 @@ exports.postRegister = async (req, res, next) => {
         userInfo,
         url: "register",
       });
+    }
+    if (err.message === "Unauthorized") {
+      helpers.removeFailedUser(User, req.body.email);
+      const error =
+        "Something has went wrong with sending an email. Please try again in a few.";
+      return res.render("auth/register", {
+        error,
+        userInfo,
+        url: "register",
+      });
     } else {
-      debug(err);
+      debug(err, req.body);
+      helpers.removeFailedUser(User, req.body.email);
       const error = err.message;
       return res.render("auth/register", {
         error,
