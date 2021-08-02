@@ -8,7 +8,7 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.firstName;
     this.url = url;
-    this.from = `Darrell Pawson <${process.env.EMAIL_FROM}>`;
+    this.from = `${process.env.NAME} <${process.env.EMAIL_FROM}>`;
   }
 
   async send(template, subject) {
