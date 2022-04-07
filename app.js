@@ -21,7 +21,7 @@ const expressSanitizer = require("express-sanitizer");
 const User = require("./models/userModel");
 
 const authRouter = require("./routes/authRouter");
-const indexRouter = require("./routes/index");
+const indexRouter = require("./routes/indexRouter");
 const usersRouter = require("./routes/users");
 
 const csrfProtection = csrf({ cookie: true });
