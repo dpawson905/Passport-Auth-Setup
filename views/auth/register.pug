@@ -1,37 +1,26 @@
 extends ../layout
 
 block content
-  .container-fluid.p-0
-    .row.g-0
-      .col-lg-6.d-none.d-xl-block
-        img.img-fluid.login-img.shadow(src="/images/authImage.jpeg", alt="Old Typewriter")
-      .col-xl-6.col-lg-12.login-form
-        h1.py-3 Register
-        form(action="/auth/register" method="POST")
-          .form-inputs
-            .mb-2
-              label(for="email") Email Address
-              input.form-control(type="email" name="email" id="email" placeholder="Email Address" value=`${userInfo.email}` autofocus)
-            .mb-2
-              label(for="username") Username
-              input.form-control(type="text" name="username" id="username" placeholder="Username" value=`${userInfo.username}`)
-            .mb-2
-              label(for="firstName") First Name
-              input.form-control(type="text" name="firstName" id="firstName" placeholder="First Name" value=`${userInfo.firstName}`)
-            .mb-2
-              label(for="lastName") Last Name
-              input.form-control(type="text" name="lastName" id="lastName" placeholder="Last Name" value=`${userInfo.lastName}`)
-            .mb-2
-              label(for="password") Password
-              input.form-control(type="password" name="password" id="password" placeholder="Password")
-            .mb-2
-              label(for="password2") Conform Password
-              input.form-control(type="password" name="password2" id="password2" placeholder="Confirm Password")
-              div
-                small#checkPw
-            .my-4
-              input(type="hidden", name="_csrf" value=`${csrfToken}`)
-              a.float-left.btn.btn-outline-secondary(href="/auth/login") Already have an account? Login
-              button.btn.btn-primary.float-right(type="submit") Register
-              
+  .hero
+    .form-container
+      form(action="/auth/register" method="POST").form
+        .mb-2
+          label(for="email") Email Address
+          input.form-control(type="email" name="email" id="email" placeholder="Email Address" value=`${userInfo.email}` autofocus)
+        .mb-2
+          label(for="username") Username
+          input.form-control(type="text" name="username" id="username" placeholder="Username" value=`${userInfo.username}`)
+        .mb-2
+          label(for="password") Password
+          input.form-control(type="password" name="password" id="password" placeholder="Password")
+        .mb-2
+          label(for="password2") Confirm Password
+          input.form-control(type="password" name="password2" id="password2" placeholder="Confirm Password")
+          div
+            small#checkPw
+        .mb-4
+          input(type="hidden", name="_csrf" value=`${csrfToken}`)
+          a.float-left.btn.btn-outline-secondary(href="/auth/login") Have an account? Login
+          button.btn.btn-primary.float-right(type="submit") Register
+          
   include ../partials/_footer
