@@ -105,18 +105,28 @@ exports.verifyFromEmail = async (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-  res.render("auth/login", { url: "login" });
+  res.render("auth/login", {
+    url: "login",
+    userInfo: {
+      username: "",
+    },
+  });
 };
 
 exports.postLogin = async (req, res, next) => {
   const user = await User.findOne({ username: req.body.username });
   if (!user.isVerified) {
-    req.flash("error", "You have not verified your account");
-    return res.redirect("/");
+    const error =
+      "You have not verified your account";
+    return res.render("auth/login", {
+      error,
+      userInfo,
+      url: "login",
+    });
   }
   await passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/",
+    failureRedirect: "/auth/login",
     successFlash: `Welcome back ${user.username}`,
     failureFlash: true,
   })(req, res, next);
