@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
+    "start-dev": "concurrently \"npm run dev-win\" \"npm run post-css\"",
     "dev": "DEBUG=app:* nodemon server.js",
     "dev-win": "set DEBUG=app:* & nodemon server.js",
     "post-css": "postcss public/stylesheets/style.css -o public/stylesheets/style.css -m -u autoprefixer -w --verbose",
