@@ -1578,7 +1578,7 @@ body {
 }
 
 .header__main-nav--menu > div {
-  background-color: rgba(23, 27, 64, 0.7);
+  background-color: rgba(23, 27, 64, 0.95);
   height: 100vh;
   width: 100vw;
   display: grid;
@@ -1621,7 +1621,7 @@ body {
   z-index: -1;
   -webkit-transform: scaleY(0);
           transform: scaleY(0);
-  background-color: #171b40;
+  background-color: #fff;
   transition: all 0.3s ease-in-out;
 }
 
@@ -1629,6 +1629,16 @@ body {
 .header__main-nav--menu ul li a:active::before {
   -webkit-transform: scaleY(1);
           transform: scaleY(1);
+}
+
+.header__main-nav--menu ul li a,
+.header__main-nav--menu ul li a {
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.header__main-nav--menu ul li a:hover,
+.header__main-nav--menu ul li a:active {
+  color: #171b40;
 }
 
 .header__main-nav--menu ul li a.active {

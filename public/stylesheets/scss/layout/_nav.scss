@@ -111,7 +111,7 @@
     place-items: center;
 
     & > div {
-      background-color: rgba($color-secondary-dark, 0.7);
+      background-color: rgba($color-secondary-dark, 0.95);
       height: 100vh;
       width: 100vw;
 
@@ -152,14 +152,25 @@
         width: 100%;
         z-index: -1;
         transform: scaleY(0);
-        background-color: $color-primary;
+        background-color: $color-white;
         transition: all 0.3s ease-in-out;
+        
       }
     }
 
     & ul li a:hover::before,
     & ul li a:active::before {
       transform: scaleY(1);
+    }
+
+    & ul li a,
+    & ul li a {
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    & ul li a:hover,
+    & ul li a:active {
+      color: $color-primary;
     }
 
     & ul li a.active {
