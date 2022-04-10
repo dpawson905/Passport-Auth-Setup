@@ -20,16 +20,15 @@ input {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 425px;
+  width: 50%;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 10px 20px 0 rgba(#999, 0.25);
   padding: 0.75rem;
 
   @include respond(phone) {
-    max-width: auto;
-}
+    width: 95% !important;
+  }
 }
 
 .card-image {
