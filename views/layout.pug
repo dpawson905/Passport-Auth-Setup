@@ -2,9 +2,14 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.min.css')
-    script(src="/javascripts/jquery.min.js")
+    link(rel='preconnect' href='https://fonts.googleapis.com')
+    link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Grape+Nuts&display=swap' rel='stylesheet')
+    link(rel='stylesheet', href='stylesheets/style.css')
+    script(src="javascripts/jquery.min.js")
+    script(src="javascripts/modaal.min.js")
   body
-    include partials/_navbar
+    include partials/_header
+    include partials/_registerModal
     block content
     include partials/_footer

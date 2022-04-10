@@ -1,0 +1,23 @@
+#inline-register(style="display: none;")
+  .form
+    .card
+      .card-image
+        h2.card-heading
+          | Get started
+          small Let us create your account
+      form.card-form(action='/auth/register', method='POST')
+        .input
+          input.input-field(type='email' required="" name="email")
+          label.input-label Email
+        .input
+          input.input-field(type='text' required="" name="username")
+          label.input-label Username
+        .input
+          input.input-field(type='password' required="" name="password")
+          label.input-label Password
+        .action
+          button(type="submit").action-button Get started
+      .card-info
+        p
+          | By signing up you are agreeing to our 
+          a(href='#') Terms and Conditions

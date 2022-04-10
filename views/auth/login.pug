@@ -1,18 +1,16 @@
 extends ../layout
 
 block content
-  .hero
-    .form-container
-      form(action="/auth/login" method="POST").form
-        .mb-2
-          label(for="username") Username
-          input.form-control(type="text" name="username" id="username" placeholder="Username" value=`${userInfo.username}`)
-        .mb-2
-          label(for="password") Password
-          input.form-control(type="password" name="password" id="password" placeholder="Password")
-        .mb-4
-          input(type="hidden", name="_csrf" value=`${csrfToken}`)
-          a.float-left.btn.btn-outline-secondary(href="/auth/register") Need an account? 
-          button.btn.btn-primary.float-right(type="submit") Login
+  form(action="/auth/login" method="POST")
+    div
+      label(for="username") Username
+      input(type="text" name="username" id="username" placeholder="Username" value=`${userInfo.username}`)
+    div
+      label(for="password") Password
+      input(type="password" name="password" id="password" placeholder="Password")
+    div
+      input(type="hidden", name="_csrf" value=`${csrfToken}`)
+      a(href="/auth/register") Need an account? 
+      button(type="submit") Login
           
   include ../partials/_footer

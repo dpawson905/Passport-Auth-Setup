@@ -6,7 +6,8 @@
     "start": "node server.js",
     "dev": "DEBUG=app:* nodemon server.js",
     "dev-win": "set DEBUG=app:* & nodemon server.js",
-    "post-css": "postcss public/stylesheets/style.css -o public/stylesheets/style.min.css -m -u autoprefixer -w --verbose"
+    "post-css": "postcss public/stylesheets/style.css -o public/stylesheets/style.css -m -u autoprefixer -w --verbose",
+    "post-css-min": "postcss public/stylesheets/style.css -o public/stylesheets/style.min.css -m -u autoprefixer cssnano"
   },
   "browserslist": {
     "production": [
@@ -53,6 +54,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.4",
     "create-admin-cli": "^1.0.4",
+    "cssnano": "^5.1.7",
     "postcss-cli": "^9.1.0"
   }
 }

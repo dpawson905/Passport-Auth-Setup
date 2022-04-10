@@ -22,6 +22,13 @@
 
   $("#password2, #checkPw").keyup(checkPasswordMatch);
 
+  
+  $('.inline-register').modaal();
+  $('.inline-register').click(() => {
+    document.getElementById('checkbox').click();
+    $("form").parents('.modaal-container').css("background", "transparent").css('box-shadow', "none");
+  })
+
   window.setTimeout(function () {
     $(".toast").slideUp(500, function () {
       $(this).remove();

@@ -35,14 +35,18 @@ app.set('view engine', 'pug');
 
 // Set security HTTP headers
 const scriptSrcUrls = [];
-const styleSrcUrls = [];
+const styleSrcUrls = [
+  'https://fonts.googleapis.com'
+];
 const connectSrcUrls = [];
 const frameSrcUrls = [];
-const fontSrcUrls = [];
+const fontSrcUrls = [
+  'https://fonts.gstatic.com'
+];
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'", 'http://127.0.0.1:3000/*'],
+      defaultSrc: ["'self'"],
       frameSrc: ["'self'", ...frameSrcUrls],
       connectSrc: ["'self'", ...connectSrcUrls],
       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
@@ -71,7 +75,7 @@ app.use(
     src: path.join(__dirname, 'public'),
     dest: destPath,
     indentedSyntax: false, // true = .sass and false = .scss
-    sourceMap: true,
+    sourceMap: false,
     outputStyle: "expanded"
   })
 );

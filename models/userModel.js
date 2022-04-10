@@ -21,13 +21,13 @@ const UserSchema = new Schema(
     firstName: {
       type: String,
       lowercase: true,
-      required: true,
+      required: false,
       trim: true,
     },
     lastName: {
       type: String,
       lowercase: true,
-      required: true,
+      required: false,
       trim: true,
     },
     isVerified: {

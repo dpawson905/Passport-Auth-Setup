@@ -1,0 +1,13 @@
+@keyframes main-nav {
+  0% {
+    transform: translateX(250rem) rotate(1850deg);
+    opacity: 0;
+  }
+  90% {
+    transform: translateX(-5rem) rotate(-25deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+    opacity: 1;
+  }
+}
