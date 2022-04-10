@@ -13,10 +13,15 @@
           input.input-field(type='text' required="" name="username")
           label.input-label Username
         .input
-          input.input-field(type='password' required="" name="password")
+          input#password.input-field.password-field(type='password' required="" name="password")
           label.input-label Password
+        .input
+          div
+            span#checkPw
+          input#password2.input-field.password-field(type='password' required="" name="password2")
+          label.input-label Confirm Password
         .action
-          button(type="submit").action-button.shadow Get started
+          button#registerButton(type="submit").action-button.shadow Get started
       .card-info
         p
           | By signing up you are agreeing to our 

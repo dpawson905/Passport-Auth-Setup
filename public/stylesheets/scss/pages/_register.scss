@@ -142,6 +142,10 @@ input {
   }
 }
 
-.modaal-container:has(.form) {
-  background: transparent;
+div span#checkPw {
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 1.8rem;
+  padding: .5rem 0;
 }

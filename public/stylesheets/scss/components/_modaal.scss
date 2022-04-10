@@ -44,7 +44,7 @@ $modaal-grey: #afb7bc;
 }
 
 .modaal-container {
-  height: 100%;
+  max-height: 100vh;
 
   .modaal-content {
     height: 100%;
@@ -125,7 +125,7 @@ $modaal-grey: #afb7bc;
 	position: relative;
 	vertical-align: middle;
 	text-align: center;
-	padding: 80px 25px;
+	// padding: 80px 25px;
 
 	// when is fullscreen
 	.modaal-fullscreen & {
@@ -516,10 +516,10 @@ $modaal-grey: #afb7bc;
 	}
 }
 @media screen and (max-height: 1000px) {
-	.modaal-inner-wrapper {
-		padding-top: 60px;
-		padding-bottom: 60px;
-	}
+	// .modaal-inner-wrapper {
+	// 	padding-top: 60px;
+	// 	padding-bottom: 60px;
+	// }
 	.modaal-instagram iframe {
 		width: 600px !important;
 	}

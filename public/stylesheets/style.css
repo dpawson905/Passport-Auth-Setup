@@ -567,6 +567,14 @@ body {
   color: #fff;
 }
 
+.form-error {
+  color: #ff0000;
+}
+
+.form-success {
+  color: #60dd06;
+}
+
 .btn {
   color: white;
   border: none;
@@ -589,7 +597,7 @@ body {
 }
 
 .modaal-container {
-  height: 100%;
+  max-height: 100vh;
 }
 
 .modaal-container .modaal-content {
@@ -676,7 +684,6 @@ body {
   position: relative;
   vertical-align: middle;
   text-align: center;
-  padding: 80px 25px;
 }
 
 .modaal-fullscreen .modaal-inner-wrapper {
@@ -1087,10 +1094,6 @@ body {
 }
 
 @media screen and (max-height: 1000px) {
-  .modaal-inner-wrapper {
-    padding-top: 60px;
-    padding-bottom: 60px;
-  }
   .modaal-instagram iframe {
     width: 600px !important;
   }
@@ -1800,7 +1803,11 @@ input {
   text-decoration: none;
 }
 
-.modaal-container:has(.form) {
-  background: transparent;
+div span#checkPw {
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 1.8rem;
+  padding: .5rem 0;
 }
 /*# sourceMappingURL=style.css.map */
