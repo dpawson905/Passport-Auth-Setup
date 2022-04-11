@@ -1,28 +1,29 @@
-#inline-register(style="display: none;")
-  .form
-    .card
-      .card-image
-        h2.card-heading
-          | Get started
-          small Let us create your account
-      form.card-form(action='/auth/register', method='POST')
-        .input
-          input.input-field(type='email' required="" name="email")
-          label.input-label Email
-        .input
-          input.input-field(type='text' required="" name="username")
-          label.input-label Username
-        .input
-          input#password.input-field.password-field(type='password' required="" name="password")
-          label.input-label Password
-        .input
-          div
-            span#checkPw
-          input#password2.input-field.password-field(type='password' required="" name="password2")
-          label.input-label Confirm Password
-        .action
-          button#registerButton(type="submit").action-button.shadow Get started
-      .card-info
-        p
-          | By signing up you are agreeing to our 
-          a(href='#') Terms and Conditions
+// Modal
+#registerModal.modal.fade(tabindex='-1' aria-labelledby='registerModal' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered.modal-lg
+    .modal-content
+      form(action="/auth/register", method="post") 
+        .modal-header
+          h5#registerModal.modal-title.paragraph Register
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          .container 
+            .row
+              .col-lg-6.offset-lg-3
+                .mb-3 
+                  label.form-label.paragraph(for="email") Email 
+                  input#email.form-control(type="email", name="email" placeholder="john@doe.com" required="")  
+                .mb-3 
+                  label.form-label.paragraph(for="username") Username 
+                  input#username.form-control(type="text", name="username" placeholder="johndoe" required="")  
+                .mb-3 
+                  label.form-label.paragraph(for="password") Password 
+                  input#password.form-control(type="password", name="password" required="")  
+                .mb-3 
+                  label.form-label.paragraph(for="password2") Confirm Password 
+                  input#password2.form-control(type="password", name="password2" required="")
+                  div#checkPw.paragraph 
+        .modal-footer
+          input(type="hidden", name="_csrf" value=`${csrfToken}`)
+          button.btn.btn-outline-danger(type='button' data-bs-dismiss='modal') Cancel
+          button.btn.btn-outline-primary(type='submit') Register

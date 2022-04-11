@@ -1,8 +1,8 @@
 (function ($) {
   $("#registerButton").prop("disabled", true)
   /*global $:true, jQuery:true */
-  var navHeight = $('.navbar').height();
-  $('body').css({ marginTop : navHeight });
+  // var navHeight = $('.navbar').height();
+  // $('body').css({ marginTop : navHeight });
 
   function checkPasswordMatch() {
     var password = $("#password").val();
@@ -19,17 +19,9 @@
         .removeClass("form-error")
         .html("Passwords match."),
       $("#registerButton").prop("disabled", false);
-      
 }
 
   $("#password2, #checkPw").keyup(checkPasswordMatch);
-
-  
-  $('.inline-register').modaal();
-  $('.inline-register').click(() => {
-    document.getElementById('checkbox').click();
-    $("form").parents('.modaal-container').css("background", "transparent").css('box-shadow', "none");
-  })
 
   window.setTimeout(function () {
     $(".toast").slideUp(500, function () {
