@@ -1,37 +1,9 @@
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-}
-
-:root {
-  font-size: 62.5%; 
-}
-
-
 html {
-
-  @include respond(tab-land) {
-    // width < 1200px
-    font-size: 56.25%; // 1rem = 9px - 9/16 = 56.25%
-  }
-
-  @include respond(tab-port) {
-    // width < 900px
-    font-size: 50%; // 1rem = 8px - 8/16 = 50%
-  }
-
-  @include respond(big-desktop) {
-    font-size: 75%; // 1rem = 12px - 12/16 = 75%
-  }
+  font-size: 62.5%;
 }
 
 body {
-  box-sizing: border-box;
-  font-family: 'Grape Nuts', cursive;
-  font-weight: 400;
+  font-family: 'Amatic SC', cursive;
   line-height: 1.5;
   color: $color-grey-dark;
   -webkit-font-smoothing: antialiased;

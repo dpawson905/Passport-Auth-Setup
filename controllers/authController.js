@@ -54,7 +54,7 @@ exports.postRegister = async (req, res, next) => {
   } catch (err) {
     if (err.name === "MongoError" && err.code === 11000) {
       const error = "Sorry, this email address is already in use.";
-      return res.render("auth/register", {
+      return res.render("index", {
         error,
         userInfo,
         url: "register",
@@ -64,7 +64,7 @@ exports.postRegister = async (req, res, next) => {
       helpers.removeFailedUser(User, req.body.email);
       const error =
         "Something has went wrong with sending an email. Please try again in a few.";
-      return res.render("auth/register", {
+      return res.render("index", {
         error,
         userInfo,
         url: "register",
@@ -73,7 +73,7 @@ exports.postRegister = async (req, res, next) => {
       debug(err, req.body);
       helpers.removeFailedUser(User, req.body.email);
       const error = err.message;
-      return res.render("auth/register", {
+      return res.render("index", {
         error,
         userInfo,
         url: "register",
