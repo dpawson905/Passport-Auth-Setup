@@ -107,37 +107,6 @@ exports.logOut = (req, res, next) => {
   return res.redirect("/");
 };
 
-exports.getResendToken = (req, res, next) => {
-  res.render("auth/resendToken");
-};
-
-exports.postResendToken = async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    req.flash(
-      "error",
-      "Sorry, it looks like this account does not exist. Create a new account using the same email address."
-    );
-    return res.redirect("/auth/register");
-  }
-  const token = await Token.findOne({ _userId: user._id });
-  let url = emailUrl.setUrl(req, "auth", `token?token=${newToken.token}`);
-  if (!token) {
-    const newToken = new Token({
-      _userId: user._id,
-      token: crypto.randomBytes(16).toString("hex"),
-    });
-    await newToken.save();
-    await new Email(user, url).resendToken();
-    req.flash("success", "Your token has been sent to your email.");
-    return res.redirect("/");
-  } else {
-    await new Email(user, url).resendToken();
-    req.flash("success", "Your token has been sent to your email.");
-    return res.redirect("/");
-  }
-};
-
 exports.getForgotPassword = (req, res, next) => {
   res.render("auth/forgotPassword");
 };

@@ -26,20 +26,7 @@ router
 
 router
   .route("/login")
-  .post(isAuthenticated, asyncErrorHandler(authController.postLogin));
-
-router
-  .route("/resend-token")
-  .get(
-    isAuthenticated,
-    asyncErrorHandler(isVerified),
-    authController.getResendToken
-  )
-  .post(
-    isAuthenticated,
-    asyncErrorHandler(isVerified),
-    asyncErrorHandler(authController.postResendToken)
-  );
+  .post(isAuthenticated, asyncErrorHandler(isNotVerified), asyncErrorHandler(authController.postLogin));
 
 router
   .route("/forgot-password")

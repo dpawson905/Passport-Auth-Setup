@@ -49,6 +49,15 @@ const middleware = {
     res.redirect("/");
   },
 
+  isNotVerified: async (req, res, next) => {
+    let user = await User.findOne({ username: req.body.username });
+    if (!user.isVerified) {
+      req.flash("error", "Your account has not been verified.");
+      return res.redirect("/");
+    }
+    return next();
+  },
+
   validatePassword: (req, res, next) => {
     const userInfo = req.body;
     if (userInfo.password !== userInfo.password2) {
@@ -56,16 +65,16 @@ const middleware = {
       const error = "Sorry, passwords must match.";
       return res.redirect("back");
     }
-    next();
+    return next();
   },
 
-  checkForEmail: async(req, res, next) => {
-    const registeredUserCheck = await User.findOne({email: req.body.email});
+  checkForEmail: async (req, res, next) => {
+    const registeredUserCheck = await User.findOne({ email: req.body.email });
     if (registeredUserCheck) {
       req.flash("error", "This email address is already in use");
       return res.redirect("/");
     }
-    next();
+    return next();
   },
 
   validateEmail: async (req, res, next) => {
@@ -76,7 +85,13 @@ const middleware = {
       }
       const { result, reason } = response.body;
       if (result === "deliverable" && reason === "accepted_email") {
-        next();
+        return next();
+      } else {
+        req.flash(
+          "error",
+          "Email is unable to be verified. Please use a different email address."
+        );
+        return res.redirect("back");
       }
     });
   },
