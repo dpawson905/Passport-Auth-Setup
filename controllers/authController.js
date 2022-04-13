@@ -25,6 +25,10 @@ exports.postRegister = async (req, res, next) => {
     const newUser = new User({
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
+      phoneNumber: userInfo.phoneNumber,
+      image: {
+        path: `https://robohash.org/${userInfo.username}?set=set3`
+      },
       email: userInfo.email,
       username: userInfo.username,
       expiresDateCheck: Date.now(),

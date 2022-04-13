@@ -18,6 +18,11 @@ const UserSchema = new Schema(
       required: true,
       trim: true,
     },
+    phoneNumber: {
+      type: String,
+      unique: true,
+      required: true
+    },
     firstName: {
       type: String,
       lowercase: true,
@@ -52,7 +57,10 @@ const UserSchema = new Schema(
         default: true,
       },
     },
-    images: [{ path: String, filename: String }],
+    image: { 
+      path: String,
+      filename: String,
+    },
     expiresDateCheck: {
       type: Date,
       default: undefined,

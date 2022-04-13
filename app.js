@@ -43,6 +43,9 @@ const frameSrcUrls = [];
 const fontSrcUrls = [
   'https://fonts.gstatic.com'
 ];
+const imgSrcUrls = [
+  'https://robohash.org'
+];
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -52,7 +55,7 @@ app.use(
       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
       workerSrc: ["'self'", 'blob:'],
-      imgSrc: ["'self'", 'blob:', 'data:'],
+      imgSrc: ["'self'", 'blob:', 'data:', ...imgSrcUrls],
       fontSrc: ["'self'", ...fontSrcUrls],
     },
   })

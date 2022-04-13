@@ -26,7 +26,8 @@ body {
 .heading-primary {
   color: #fff;
   text-transform: uppercase;
-  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
   margin-bottom: .5rem;
 }
 
@@ -105,6 +106,10 @@ body {
   color: #60dd06;
 }
 
+.nav-link img {
+  width: 45px;
+}
+
 .btn {
   font-size: 2.2rem;
 }
@@ -136,7 +141,9 @@ body {
 .container-nbs {
   margin: 0 auto;
   display: grid;
+  grid-template-columns: [container-start] 1fr [center-start] repeat(10, [col-start] minmax(-webkit-min-content, 11rem) [col-end]) [center-end] 1fr [container-end];
   grid-template-columns: [container-start] 1fr [center-start] repeat(10, [col-start] minmax(min-content, 11rem) [col-end]) [center-end] 1fr [container-end];
+  grid-template-rows: repeat(7, -webkit-min-content);
   grid-template-rows: repeat(7, min-content);
 }
 
@@ -146,7 +153,8 @@ img {
 }
 
 input {
-  appearance: none;
+  -webkit-appearance: none;
+          appearance: none;
   border-radius: 0;
 }
 
@@ -243,10 +251,12 @@ input {
 
 .input-field:focus + .input-label, .input-field:valid + .input-label, .input-field:-webkit-autofill + .input-label, .input-field:-webkit-autofill:hover + .input-label, .input-field:-webkit-autofill:focus + .input-label, .input-field:-webkit-autofill:active + .input-label {
   color: #6658d3;
-  transform: translateY(-2.2rem);
+  -webkit-transform: translateY(-2.2rem);
+          transform: translateY(-2.2rem);
 }
 
 .input-field:-webkit-autofill, .input-field:-webkit-autofill:hover, .input-field:-webkit-autofill:focus, .input-field:-webkit-autofill:active {
+  -webkit-transition: background-color 5000s ease-in-out 0s;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -290,3 +300,4 @@ div span#checkPw {
   font-size: 1.8rem;
   padding: .5rem 0;
 }
+/*# sourceMappingURL=style.css.map */
