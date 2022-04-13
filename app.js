@@ -60,7 +60,7 @@ app.use(
 
 // Development logging
 if (process.env.NODE_ENV.trim() === 'development') {
-  app.use(logger('common'));
+  app.use(logger('tiny'));
 }
 app.use(methodOverride('_method'));
 app.use(express.json({ limit: '10kb' }));

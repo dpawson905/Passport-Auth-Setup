@@ -1,0 +1,19 @@
+// Modal
+#verifyModal.modal.fade(tabindex='-1' aria-labelledby='verifyModal' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered.modal-lg
+    .modal-content
+      form(action="/auth/token", method="post") 
+        .modal-header
+          h5#verifyModal.modal-title.paragraph Register
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          .container 
+            .row
+              .col-lg-6.offset-lg-3
+                .mb-3 
+                  label.form-label.paragraph(for="token") Code 
+                  input#token.form-control(type="text", name="token" placeholder="0000000" required="")  
+        .modal-footer
+          input(type="hidden", name="_csrf" value=`${csrfToken}`)
+          button.btn.btn-outline-danger(type='button' data-bs-dismiss='modal') Cancel
+          button.btn.btn-outline-primary(type='submit') Verify

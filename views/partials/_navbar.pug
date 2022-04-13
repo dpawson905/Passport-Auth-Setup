@@ -8,8 +8,12 @@ nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.bg-transparent
         li.nav-item
           a.nav-link.active(aria-current='page' href='#') Home
       ul.navbar-nav.ms-auto.mb-2.mb-lg-0
-        li.nav-item
-          a.nav-link(aria-current='page' data-bs-toggle="modal" data-bs-target="#registerModal" href='#registerModal') Register
-        li.nav-item
-          a.nav-link(href='#') Login
+        if currentUser && isAuthenticated
+          li.nav-item
+            a.nav-link(href='/auth/logout') Logout #{currentUser.username}
+        else 
+          li.nav-item
+            a.nav-link(aria-current='page' data-bs-toggle="modal" data-bs-target="#registerModal" href='#registerModal') Register
+          li.nav-item
+            a.nav-link(href='#') Login
         

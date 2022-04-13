@@ -1,5 +1,12 @@
 (function ($) {
   $("#registerButton").prop("disabled", true)
+  var myModalEl = document.getElementById('verifyModal')
+  var modal = bootstrap.Modal.getOrCreateInstance(myModalEl)
+
+  if (window.location.search == '?loadtextmodal') {
+    
+    modal.show()
+  }
   /*global $:true, jQuery:true */
   // var navHeight = $('.navbar').height();
   // $('body').css({ marginTop : navHeight });

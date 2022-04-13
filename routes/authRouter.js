@@ -44,10 +44,10 @@ router
   .get(isAuthenticated, authController.getForgotPassword)
   .post(isAuthenticated, asyncErrorHandler(authController.postForgotPassword));
 
-router.get(
+router.post(
   "/token",
   isAuthenticated,
-  asyncErrorHandler(authController.verifyFromEmail)
+  asyncErrorHandler(authController.verifyFromText)
 );
 router.get(
   "/newpw-token",

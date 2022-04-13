@@ -1,16 +1,22 @@
 const debug = require("debug")("app:auth");
 const passport = require("passport");
+const kickbox = require("kickbox")
+  .client(process.env.KICKBOX_API_KEY)
+  .kickbox();
+
 const crypto = require("crypto");
 const Email = require("../utils/email");
+
 const emailUrl = require("../utils/urls");
 const helpers = require("../utils/helpers");
 
 const User = require("../models/userModel");
 const Token = require("../models/tokenModel");
 
-const removeFailedUser = async (userEmail) => {
-  await User.deleteOne({ email: userEmail });
-};
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
+const randomstring = require("random-string-gen");
 
 exports.getRegister = (req, res, next) => {
   res.render("auth/register", {
@@ -27,64 +33,79 @@ exports.getRegister = (req, res, next) => {
 exports.postRegister = async (req, res, next) => {
   const userInfo = req.body;
   // Middleware runs before to check if passwords match
-  try {
-    const newUser = new User({
-      firstName: userInfo.firstName,
-      lastName: userInfo.lastName,
-      email: userInfo.email,
-      username: userInfo.username,
-      expiresDateCheck: Date.now(),
-      isVerified: false,
-    });
-    delete userInfo.password2;
-    const user = await User.register(newUser, userInfo.password);
-    const userToken = new Token({
-      _userId: user._id,
-      token: crypto.randomBytes(16).toString("hex"),
-    });
-    await userToken.save();
-    const url = emailUrl.setUrl(req, "auth", `token?token=${userToken.token}`);
-    const title = res.locals.title;
-    await new Email(user, url).sendWelcome(title);
-    req.flash(
-      "success",
-      "Thanks for registering, Please check your email to verify your account."
-    );
-    return res.redirect("/");
-  } catch (err) {
-    if (err.name === "MongoError" && err.code === 11000) {
-      const error = "Sorry, this email address is already in use.";
-      return res.render("index", {
-        error,
-        userInfo,
-        url: "register",
-      });
+  await kickbox.verify(userInfo.email, async (err, response) => {
+    if (err) {
+      req.flash("error", "Email Verification Failed. Please try again");
+      return res.redirect("/");
     }
-    if (err.message === "Unauthorized") {
-      helpers.removeFailedUser(User, req.body.email);
-      const error =
-        "Something has went wrong with sending an email. Please try again in a few.";
-      return res.render("index", {
-        error,
-        userInfo,
-        url: "register",
-      });
-    } else {
-      debug(err, req.body);
-      helpers.removeFailedUser(User, req.body.email);
-      const error = err.message;
-      return res.render("index", {
-        error,
-        userInfo,
-        url: "register",
-      });
+    // Let's see some results
+    const { result, reason } = response.body;
+    if (result === "deliverable" && reason === "accepted_email") {
+      try {
+        const newUser = new User({
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          email: userInfo.email,
+          username: userInfo.username,
+          expiresDateCheck: Date.now(),
+          isVerified: false,
+        });
+        delete userInfo.password2;
+        const user = await User.register(newUser, userInfo.password);
+        let textcode = randomstring({
+          length: 6,
+          type: "numeric",
+        });
+        await client.messages.create({
+          body: `Thanks for registering, here is your verification code: ${textcode}`,
+          from: process.env.TWILIO_NUMBER,
+          to: req.body.phoneNumber,
+        });
+        const userToken = new Token({
+          _userId: user._id,
+          token: textcode,
+        });
+        await userToken.save();
+        req.flash(
+          "success",
+          "Thanks for registering, Enter the code from the text message..."
+        );
+        return res.redirect("/?loadtextmodal");
+      } catch (err) {
+        if (err.name === "MongoError" && err.code === 11000) {
+          const error = "Sorry, this email address is already in use.";
+          return res.render("index", {
+            error,
+            userInfo,
+            url: "register",
+          });
+        }
+        if (err.message === "Unauthorized") {
+          helpers.removeFailedUser(User, req.body.email);
+          const error =
+            "Something has went wrong with sending an email. Please try again in a few.";
+          return res.render("index", {
+            error,
+            userInfo,
+            url: "register",
+          });
+        } else {
+          helpers.removeFailedUser(User, req.body.email);
+          const error = err.message;
+          return res.render("index", {
+            error,
+            userInfo,
+            url: "register",
+          });
+        }
+      }
     }
-  }
+  });
 };
 
-exports.verifyFromEmail = async (req, res, next) => {
+exports.verifyFromText = async (req, res, next) => {
   const token = await Token.findOne({
-    token: req.query.token,
+    token: req.body.token,
   });
   if (!token) {
     req.flash("error", "That token is not valid");
@@ -116,8 +137,7 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = async (req, res, next) => {
   const user = await User.findOne({ username: req.body.username });
   if (!user.isVerified) {
-    const error =
-      "You have not verified your account";
+    const error = "You have not verified your account";
     return res.render("auth/login", {
       error,
       userInfo,
