@@ -1,0 +1,22 @@
+// Modal
+#loginModal.modal.fade(tabindex='-1' aria-labelledby='loginModal' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered.modal-lg
+    .modal-content
+      form(action="/auth/login", method="post") 
+        .modal-header
+          h5#loginModal.modal-title.paragraph Register
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          .container 
+            .row
+              .col-lg-6.offset-lg-3  
+                .mb-3 
+                  label.form-label.paragraph(for="username") Username 
+                  input#username.form-control(type="text", name="username" placeholder="johndoe" required="")  
+                .mb-3 
+                  label.form-label.paragraph(for="password") Password 
+                  input#password.form-control(type="password", name="password" required="")  
+        .modal-footer
+          input(type="hidden", name="_csrf" value=`${csrfToken}`)
+          button.btn.btn-outline-danger(type='button' data-bs-dismiss='modal') Cancel
+          button.btn.btn-outline-primary(type='submit') Login

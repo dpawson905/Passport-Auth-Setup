@@ -1,3 +1,6 @@
+const kickbox = require("kickbox")
+  .client(process.env.KICKBOX_API_KEY)
+  .kickbox();
 const { cloudinary } = require("../cloudinary");
 const User = require("../models/userModel");
 
@@ -49,14 +52,33 @@ const middleware = {
   validatePassword: (req, res, next) => {
     const userInfo = req.body;
     if (userInfo.password !== userInfo.password2) {
+      req.flash("error", "Passwords do not match");
       const error = "Sorry, passwords must match.";
-      return res.render("auth/register", {
-        error,
-        userInfo,
-        url: "register",
-      });
+      return res.redirect("back");
     }
     next();
+  },
+
+  checkForEmail: async(req, res, next) => {
+    const registeredUserCheck = await User.findOne({email: req.body.email});
+    if (registeredUserCheck) {
+      req.flash("error", "This email address is already in use");
+      return res.redirect("/");
+    }
+    next();
+  },
+
+  validateEmail: async (req, res, next) => {
+    await kickbox.verify(req.body.email, (err, response) => {
+      if (err) {
+        req.flash("error", "Email Verification Failed. Please try again");
+        return res.redirect("/");
+      }
+      const { result, reason } = response.body;
+      if (result === "deliverable" && reason === "accepted_email") {
+        next();
+      }
+    });
   },
 };
 

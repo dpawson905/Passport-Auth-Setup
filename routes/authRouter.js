@@ -10,20 +10,22 @@ const {
   isVerified,
   isNotVerified,
   validatePassword,
+  checkForEmail,
+  validateEmail
 } = require("../middleware/index");
 
 router
   .route("/register")
-  .get(isAuthenticated, authController.getRegister)
   .post(
     isAuthenticated,
     validatePassword,
+    asyncErrorHandler(checkForEmail),
+    asyncErrorHandler(validateEmail),
     asyncErrorHandler(authController.postRegister)
   );
 
 router
   .route("/login")
-  .get(isAuthenticated, authController.getLogin)
   .post(isAuthenticated, asyncErrorHandler(authController.postLogin));
 
 router

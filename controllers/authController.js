@@ -1,8 +1,5 @@
 const debug = require("debug")("app:auth");
 const passport = require("passport");
-const kickbox = require("kickbox")
-  .client(process.env.KICKBOX_API_KEY)
-  .kickbox();
 
 const crypto = require("crypto");
 const Email = require("../utils/email");
@@ -18,89 +15,47 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 const randomstring = require("random-string-gen");
 
-exports.getRegister = (req, res, next) => {
-  res.render("auth/register", {
-    url: "register",
-    userInfo: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      username: "",
-    },
-  });
-};
-
 exports.postRegister = async (req, res, next) => {
   const userInfo = req.body;
   // Middleware runs before to check if passwords match
-  await kickbox.verify(userInfo.email, async (err, response) => {
-    if (err) {
-      req.flash("error", "Email Verification Failed. Please try again");
-      return res.redirect("/");
-    }
-    // Let's see some results
-    const { result, reason } = response.body;
-    if (result === "deliverable" && reason === "accepted_email") {
-      try {
-        const newUser = new User({
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          username: userInfo.username,
-          expiresDateCheck: Date.now(),
-          isVerified: false,
-        });
-        delete userInfo.password2;
-        const user = await User.register(newUser, userInfo.password);
-        let textcode = randomstring({
-          length: 6,
-          type: "numeric",
-        });
-        await client.messages.create({
-          body: `Thanks for registering, here is your verification code: ${textcode}`,
-          from: process.env.TWILIO_NUMBER,
-          to: req.body.phoneNumber,
-        });
-        const userToken = new Token({
-          _userId: user._id,
-          token: textcode,
-        });
-        await userToken.save();
-        req.flash(
-          "success",
-          "Thanks for registering, Enter the code from the text message..."
-        );
-        return res.redirect("/?loadtextmodal");
-      } catch (err) {
-        if (err.name === "MongoError" && err.code === 11000) {
-          const error = "Sorry, this email address is already in use.";
-          return res.render("index", {
-            error,
-            userInfo,
-            url: "register",
-          });
-        }
-        if (err.message === "Unauthorized") {
-          helpers.removeFailedUser(User, req.body.email);
-          const error =
-            "Something has went wrong with sending an email. Please try again in a few.";
-          return res.render("index", {
-            error,
-            userInfo,
-            url: "register",
-          });
-        } else {
-          helpers.removeFailedUser(User, req.body.email);
-          const error = err.message;
-          return res.render("index", {
-            error,
-            userInfo,
-            url: "register",
-          });
-        }
-      }
-    }
-  });
+  // Middleware checks for existing email(bypasses passport email check due to kickbox allowing email check to be bypassed)
+  // Passport will check for existing username
+  // Middleware runs to verify email with kickbox
+  try {
+    const newUser = new User({
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      email: userInfo.email,
+      username: userInfo.username,
+      expiresDateCheck: Date.now(),
+      isVerified: false,
+    });
+    delete userInfo.password2;
+    const user = await User.register(newUser, userInfo.password);
+    let textcode = randomstring({
+      length: 6,
+      type: "numeric",
+    });
+    await client.messages.create({
+      body: `Thanks for registering, here is your verification code: ${textcode}`,
+      from: process.env.TWILIO_NUMBER,
+      to: req.body.phoneNumber,
+    });
+    const userToken = new Token({
+      _userId: user._id,
+      token: textcode,
+    });
+    await userToken.save();
+    req.flash(
+      "success",
+      "Thanks for registering, Enter the code from the text message..."
+    );
+    return res.redirect("/?loadtextmodal");
+  } catch (err) {
+    await helpers.removeFailedUser(User, req.body.email);
+    req.flash("error", err.message);
+    return res.redirect("back");
+  }
 };
 
 exports.verifyFromText = async (req, res, next) => {
@@ -122,15 +77,6 @@ exports.verifyFromText = async (req, res, next) => {
     const redirectUrl = req.session.redirectTo || "/";
     delete req.session.redirectTo;
     res.redirect(redirectUrl);
-  });
-};
-
-exports.getLogin = (req, res, next) => {
-  res.render("auth/login", {
-    url: "login",
-    userInfo: {
-      username: "",
-    },
   });
 };
 
