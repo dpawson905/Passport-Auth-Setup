@@ -86,6 +86,7 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 
 const sess = {
+  name: 'xoco',
   secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
